@@ -1,0 +1,11 @@
+name: Run NDB CONCHECK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-on-windows:
+    runs-on: self-hosted
+    steps:
+      - name: Run Node script from local path
+        run: node "D:\Nokia-IOH\Personal\node.js\ndbconcheck\dist\ndb_concheck_loader.js"
