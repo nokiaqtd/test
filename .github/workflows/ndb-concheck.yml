@@ -7,5 +7,6 @@ jobs:
   run-on-windows:
     runs-on: self-hosted
     steps:
-      - name: Run Node script from local path
-        run: node "D:\Nokia-IOH\Personal\node.js\ndbconcheck\dist\ndb_concheck_loader.js"
+      - name: Run Node script from local path        
+        run: node ndb_concheck.loader.js
+        working-directory: "D:\\Nokia-IOH\\Personal\\node.js\\ndbconcheck\\dist"
