@@ -1,0 +1,12 @@
+name: Run Local Worker
+
+on:
+  workflow_dispatch:   # allows you to trigger manually from GitHub UI
+
+jobs:
+  run-on-windows:
+    runs-on: self-hosted
+    steps:
+      - name: Print hello world
+        run: |
+          echo '{ "message": "Hello World" }'
