@@ -9,4 +9,4 @@ jobs:
     steps:
       - name: Print hello world
         run: |
-        echo '{ "message": "Hello World" }'
+          echo '{ "message": "Hello World" }'
