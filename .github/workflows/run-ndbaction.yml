@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  run-ndbaction:
+  run-on-windows:
     runs-on: self-hosted
 
     steps:
