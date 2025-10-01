@@ -1,27 +1,24 @@
-name: NDB Action Runner
+name: Run NDB Action
 
 on:
   workflow_dispatch:
     inputs:
       profile:
-        description: "Action profile (e.g., update_bcf, del_mocnstep)"
+        description: 'Action profile (e.g., update_bcf, del_mocnstep)'
         required: true
-        default: "update_bcf"
+        default: 'update_bcf'
       params:
-        description: "User parameters in JSON string"
+        description: 'JSON string of parameters (user input values)'
         required: true
+        default: '{"SITE_ID":"14DMK0001","CELL_SYSTEM_INFO":"GSM900"}'
 
 jobs:
   run-on-windows:
     runs-on: self-hosted
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Run ndbaction.js
+      - name: Run Node script from local path
         run: |
-          echo "Running profile: ${{ github.event.inputs.profile }}"
-          echo "With params: ${{ github.event.inputs.params }}"
-          node ndbaction.js "${{ github.event.inputs.profile }}" "${{ github.event.inputs.params }}"
-	      working-directory: "D:\\sqllite"
+          echo Running profile=${{ github.event.inputs.profile }}
+          echo Params=${{ github.event.inputs.params }}
+          node ndbaction.js --profile ${{ github.event.inputs.profile }} --params '${{ github.event.inputs.params }}'
+        working-directory: "D:\\sqllite"
