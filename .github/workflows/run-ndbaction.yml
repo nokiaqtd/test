@@ -10,7 +10,7 @@ on:
       params:
         description: 'JSON string of parameters (user input values)'
         required: true
-        default: '{"SITE_ID":"14DMK0001","CELL_SYSTEM_INFO":"GSM900"}'
+        default: '{"SITE_ID":"14DMK0001","BTS_ID":99,"CELL_SYSTEM_INFO":"GSM900|DCS1800"}'
 
 jobs:
   run-on-windows:
