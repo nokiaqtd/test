@@ -7,18 +7,26 @@ on:
         description: 'Action profile (e.g., update_bcf, del_mocnstep)'
         required: true
         default: 'update_bcf'
-      params:
+      payload:
         description: 'JSON string of parameters (user input values)'
         required: true
-        default: '{"SITE_ID":"14DMK0001","BTS_ID":99,"CELL_SYSTEM_INFO":"GSM900|DCS1800"}'
+        default: '{"SITE_ID":"14DMK0001","BTS_ID":99,"CELL_SYSTEM_INFO":["GSM900","DCS1800"]}'
 
 jobs:
   run-on-windows:
     runs-on: self-hosted
     steps:
+      - name: Prepare payload (base64 encode)
+        id: prep
+        shell: pwsh
+        run: |
+          $json = '${{ github.event.inputs.payload }}'
+          $b64  = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($json))
+          echo "b64=$b64" >> $env:GITHUB_OUTPUT
+
       - name: Run Node script from local path
         run: |
           echo Running profile=${{ github.event.inputs.profile }}
-          echo Params=${{ github.event.inputs.params }}
-          node ndbaction.js --profile ${{ github.event.inputs.profile }} --params '${{ github.event.inputs.params }}'
+          echo Payload=${{ github.event.inputs.payload }}
+          node ndbaction.js --profile=${{ github.event.inputs.profile }} --payload-b64=${{ steps.prep.outputs.b64 }}
         working-directory: "D:\\sqllite"
