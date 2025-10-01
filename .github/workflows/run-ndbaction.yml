@@ -18,15 +18,25 @@ jobs:
     steps:
       - name: Prepare payload (base64 encode)
         id: prep
-        shell: pwsh
+        shell: powershell
+        env:
+          PAYLOAD: ${{ github.event.inputs.payload }}
         run: |
-          $json = '${{ github.event.inputs.payload }}'
-          $b64  = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($json))
+          # read payload from env to avoid quoting/escaping problems
+          $json = $env:PAYLOAD
+          if (-not $json) {
+            Write-Error "No payload provided in env PAYLOAD"
+            exit 1
+          }
+          # base64 encode
+          $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($json))
+          # set as step output
           echo "b64=$b64" >> $env:GITHUB_OUTPUT
 
       - name: Run Node script from local path
+        shell: powershell
         run: |
-          echo Running profile=${{ github.event.inputs.profile }}
-          echo Payload=${{ github.event.inputs.payload }}
-          node ndbaction.js --profile=${{ github.event.inputs.profile }} --payload-b64=${{ steps.prep.outputs.b64 }}
+          Write-Host "Running profile=${{ github.event.inputs.profile }}"
+          Write-Host "Payload (preview): $($env:PAYLOAD)"
+          node ndbaction.js --profile=${{ github.event.inputs.profile }} --payload-b64 ${{ steps.prep.outputs.b64 }}
         working-directory: "D:\\sqllite"
