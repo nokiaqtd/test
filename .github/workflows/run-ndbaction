@@ -24,3 +24,4 @@ jobs:
 
       - name: Run ndbaction
         run: node ndbaction.js --profile="${{ github.event.inputs.profile }}" --payload="${{ github.event.inputs.payload }}"
+        working-directory: "D:\\sqllite"
